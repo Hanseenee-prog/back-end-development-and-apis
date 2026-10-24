@@ -19,35 +19,17 @@ app.get("/", (req, res) => {
 })
 
 app.get('/api/info', (req, res) => {
-    res.json({
+    res
+        .status(200)
+        .json({
         name: "Weather Service API",
         version: "1.0.0",
         endpoints: ["/api/weather/:city", "/api/greet/:name", "/api/data"],
     });
 })
 
-app.get('/api/status', (req, res) => {
-    res.status(200).json({
-        status: 200
-    })
-})
-
 app.get('/docs', (req, res) => {
     res.redirect('/api/info')
 })
-
-app.get('/api/greet/:name', (req, res) => {
-    res.json({
-        name: req.params
-    })
-})
-
-app.route('/api/data')
-    .get((req, res) => {
-        res.json({})
-    })
-    .post((req, res) => {
-        res.status(201).json({})
-    })
 
 app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`));

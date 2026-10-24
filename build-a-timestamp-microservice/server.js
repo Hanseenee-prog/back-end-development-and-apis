@@ -11,7 +11,34 @@ app.get("/", (_req, res) => {
   res.sendFile(import.meta.dirname + "/views/index.html");
 });
 
-// Do not change code above this line
+const handleTimeStamp = (req, res) => {
+  const { date } = req.params;
+  let dateString;
+
+  if (!date) {
+    dateString = new Date();
+  }
+  else {
+    const isNumeric = /^\d+$/.test(date);
+
+    // If it is, parse it as an integer. Otherwise, pass it as a date string.
+    dateString = isNumeric ? new Date(parseInt(date)) : new Date(date);
+  }
+
+  if (isNaN(dateString.getTime())) {
+    return res
+    .status(400)
+    .json({ error : "Invalid Date" })
+  }
+
+  return res.json({
+    unix: dateString.getTime(),
+    utc: dateString.toUTCString()
+  })
+}
+
+app.get('/api/', handleTimeStamp);
+app.get('/api/:date', handleTimeStamp);
 
 // Do not change code below this line
 
